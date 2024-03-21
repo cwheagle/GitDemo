@@ -1,0 +1,608 @@
+sudo apt-get update   // yum in CentOS
+
+sudo apt-get install git
+
+sudo apt-get update
+
+git --version
+
+git --help
+
+  출력 설명 확인
+
+  git help -a
+
+ 
+
+ls  // 아무 것도 안 보임 즉 모두 숨겨진 파일, 디렉토리
+
+ls -al
+
+ 
+
+mkdir gitDemo
+
+cd gitDemo
+
+ls
+
+git init
+
+git init gitDemo2 // cd 는 안 하면서 git init 실행
+
+ls
+
+ls -a
+
+cd .git ; ls -a
+
+  출력 읽어 볼 것
+
+// .git 디렉토리는 codebase에 가했던 모든 히스토리를 포함한
+
+// 모든 정보와 commit된 파일을 보관
+
+cd ..
+
+ 
+
+vi f1 // 적당히 한 줄 넣음
+
+ 
+ls
+
+git status
+
+  => 화면 출력 내용 설명할 것  // untracked files
+
+git add f1 // git add *.txt   // git add .  // on stage
+
+git status  
+
+   // pdf 강의 자료 그림과 함께 설명
+
+   // commit 된 것은 없으나 on stage 되어 있음
+
+   // on stage 되었다는 것은 변경을 tracking 시작
+
+       하여 버전컨트롤 정보를 git cache 에 저장
+
+   // commit 하면 local repository에 저장,
+
+   // commit 된 파일만 remote repository에 저장 가능
+
+git rm --cached f1 // f1을 없에는 것이 아니라
+
+     tracking 하지 않는다
+
+ls
+
+   => 화면 출력 설명, 파일시스템에는 사라지지 않았음
+
+git status
+
+   // 화면 출력 설명
+
+ 
+
+git add .
+
+git status
+
+git commit -m 'f1 initial commit on master' f1
+
+  => 출력 화면 설명, create mode 100644
+
+   // mode 100644 는 normal file을 의미, executable은 100755 등등
+
+git log
+
+   // git 히스토리 설명
+
+ 
+   // HEAD 는 현재의 branch 를 가리키는 포인터, 즉 해당
+
+   // 브랜치에 수행되었던 마지막 commit을 가리키는 포인터
+
+   // 즉, 해당 브랜치의 마지막 commit 지점에서의 snapshot
+
+   // 강의록의 해당 내용 그림으로 설명할 것
+
+   // commit 할 때마다 -m 옵션 사용하여 알아 볼 수 있게 함
+
+   // commit ID = SHA1 hash of the commit
+
+git ls-files -s // --stage  // show info about files in the index & the working tree
+
+  // 파일시스템에 있는 파일들과 그 파일들을 git add  명령을 통하여
+
+  // git stage 에 올린 후 수정하고 commit 한
+
+  // 모든 히스토리를 저장한 공간을 staging area 라고 부르며
+
+  // 그 내역을 담고 있는 Git의 구조체를 "Git index" 라고 한다.
+
+  // 이는 stage에 올린 파일들, 즉 그 파일들의 수정/commit
+
+  // 히스토리를 관리하기 위하여 만들어진 구조체로서 tree 구조를
+
+  // 갖게 되며, "Git index" 구조체가 git 의 commit point 들 사이에서
+
+  // 빠르게 필요한 정보를 찾을 수 있게 함
+
+  //
+
+  // version control 도구인 Git은 결국 파일들의 수정/commit 의
+
+  // 모든 히스토리를 찾아서 관리하는 도구이므로
+
+  // 수정/commit 작업들의 모든 정보를 "work tree" 구조체에
+
+  // 유지, 관리
+
+  // 물론 구현된 git 프로그램은 성능과 함께 많은 파일들의 많은
+
+  // 히스토리를 구조체에 담을 수 있어야 하므로 scalability 가 높은
+
+  // 구조체로 구현되어 있으며 꽤 복잡하다.
+
+  // 참조 Blog - https://github.blog/2021-11-10-make-your-monorepo-feel-small-with-gits-sparse-index/#:~:text=The%20Git%20index%20is%20a,to%20be%20%E2%80%9Cstaged%20changes%E2%80%9D.
+
+  //
+
+ 
+git show // git show HEAD
+
+ 
+
+ 
+
+ 
+
+----- branch -----
+
+// 시나리오 : 브랜치에서 새로운 파일을 만들어
+
+// f1과 다른 경로로 version control
+
+// pdf 강의 자료의 branch 보여 줌, HEAD pointer 설명
+
+ls // 파일시스템은 f1을 보고 있음
+
+git branch br1 // master의 하위 branch, 그림으로 설명할 것
+
+git status // 아직 master branch 확인
+
+ls
+
+git checkout br1
+
+  => 출력 설명, git의 branch는 파일 시스템 상의
+
+       다른 디렉토리가 아니라
+
+       commit 히스토리, 즉 여러 피일들의 commit 히스토리를
+
+      구분하는 version control 경로 개념
+
+git status => br1 branch로 옮겨 온 것 확인,
+
+git branch //도 유사한 정보 제공
+
+ls // subbranch br1에서 parent 인 master branch 의 f1을 봄
+
+   // 상위 branch 파일들 보임
+
+vi f1 // br1에서 f1 수정, 한 줄
+
+cat f1 // 수정된 내용 확인
+
+checkout master // M   f1 // f1 modified
+
+cat f1 // br1 에서 수정한 내용이 보임
+
+ 
+git checkout br1
+
+git add f1 // br1에서git status
+
+git commit -m'f1 modified & committed on br1' f1
+
+git log
+
+git show
+
+// output 설명
+
+  // commit d4404e02fa146b1877e07ba4eccaaffa0e06e131 (HEAD -> br1)
+
+      // 해당 commit의 sha1
+
+  // Author: Ubuntu <ubuntu@ip-172-31-43-232.ap-northeast-2.compute.internal>
+
+      // 주인의 이름 등등
+
+  // Date:   Wed Mar 13 09:31:26 2024 +0000
+
+     // 주인의 date, commit 한 사람의 date 와 다를 수 있음
+
+  //    f1 modified and committed on br1
+
+     // commit log message
+
+  // diff --git a/f1 b/f1
+
+     // 두 파일 (master에서의 f1, br1 에서의 f1)을 비교함
+
+  // index 6c0f710..342bb61 100644
+
+     // 6c0f710는 변경 이전의 Git index, 즉 f1을 변경하기 전에
+
+     // git add f1 에 의해 stage 에 올린 상황에 대해 git이
+
+     // 여러가지 정보를 담은 blob의 sha1
+
+     // 342bb61은 변경 이후의 Git index의 blob의 sha1
+
+  // --- a/f1
+
+     // 변경 전의 파일
+
+  // +++ b/f1
+
+     // 변경 후의 파일
+
+ 
+  // @@ -1 +1,2 @@  // 1은 diff start line, +1은 한 줄을 더했다는 것
+
+  //  line #1 in f1
+
+  // +line #2 added on br1      
+
+       // 줄을 더한 경우에는 +, 삭제한 경우에는 -,
+
+       // 줄을 변경한 경우에는 - 와 + 같이 표시
+
+       // 위의 경우는 line #1 in f1 이라는 줄 다음에 line #2 added on br1
+
+       // 의 변경 사항을 그대로 보여 줌
+
+cat f1 // br1 에서 변경 사항 commit 하였으므로 br1 에서의 f1은 변경된
+
+   // f1이 보이는 것은 당연
+
+git checkout master // 상위 브랜치로 이동
+
+cat f1 // 아앗!!! 변경된 내용은 안 보이고 애초의 f1 만...
+
+   // 당연히 git이 보는 파일 view는 commit 지저에서의 snapshot!!!
+
+   // 따라서 버전 컨트롤의 목적대로 각 commit 지점에서의 파일 view!
+
+// 그렇다면 애초의 git home 의 master 브랜치에서 f1 파일을 만들기
+
+// 시작하여 수정 사항을 반영하며 version control 하려던 것인데
+
+// master 브랜치에서의 f1에 변경 내용을 반영시키려면? => br1을 master에
+
+// "merge" 시켜 master 에 변경된 f1이 저장되도록 해야 하겠지요.
+
+// 즉, git home 디렉토리에 서로 다른 version의 파일을 유지 하기 위해
+
+// git branch 하여 파일 수정 작업을 한 후에 merge 하여 우리가
+
+// 애초에 시작한 파일의 완료본 파일로 만드는 것  
+
+ 
+
+ 
+
+// merge 를 해 보기 전에 꼭 필요하지는 않지만 git의 파일 view를 연습해 보자
+
+ 
+
+git checkout br1
+
+ 
+touch br1-f2
+
+ls  // br1 브랜치에서 보이는 파일시스템
+
+  // 해당 디렉토리의 모든 파일 보임
+
+git status
+
+   // git의 파일 관점은 파일시스템의 관점과 다르다
+
+git add . // br1의 br1-f2를 commit 하기 위해
+
+git status
+
+git checkout master // 아직 br1-f2를 commit 하지 않고 이동
+
+// 출력은 A     br1-f2 (A는 added, 즉 not yet committed)
+
+ls
+
+git checkout br1
+
+git commit -m'br1-f2 committed on br1'
+
+  // 다른 브랜치에서 작업하는 이유는
+
+     브랜치 안에서만 파일 작업을 하려는 것이므로
+
+     브랜치 안에서 파일 생성과 동시에 commit하는 것 권장
+
+     수정은 통상 시간이 많이 걸리는 작업->git stash 이용
+
+git log // br1 브랜치에서 보는 commit 히스토리, 최근 순서로
+
+ls  // 어떤 파일이 보이나? 당연한가?
+
+ 
+
+git checkout master  // 출력 메시지가 다르네.
+
+ls // f1만 보임, git의 파일 관점은 commit point에 의해 결정됨
+
+git log // master 브랜치에서 본 commit 히스토리만
+
+ 
+
+// 과제
+
+// br1에서 새로운 파일 br1-f3를 만들고 나서
+
+ 
+// br1-f3를 on stage (git add br1-f3) 하든지 그냥 두든지 하고
+
+// git checkout master 하여 git status 를 확인
+
+// master 브랜치에서 ls 확인
+
+// master 브랜치에서 git commit br1-f3 -m'br1-f3 commit on master'
+
+// git status 와 ls 확인 -> 결가가 자신이 예상 결과인가?
+
+// git checkout br1 하고
+
+// ls 하여 결과를 확인하자. 예상한 결과인가?
+
+ 
+
+// 아래 작업도 각자 해보면서 commit point 들에서의 파일들의
+
+// snapshot 이 git의 파일 view인 것을 확인해 본다.
+
+git checkout master
+
+git branch br2  // 그림 보여 줄 것
+
+git checkout br2
+
+touch br2-f1
+
+//ls 명령을 수행하면 결과는? ->br2-f1과 master내의 파일들만
+
+ls // br2 브랜치에서 보는 파일시스템에는 br1-f2 없음 왜?
+
+git checkout master
+
+ls 하면 보이는 파일은?  //
+
+git checkout br2
+
+git add .
+
+git commit -m 'f3 committed on br2' f3
+
+ls // 어느 파일이 보이나? 왜? br2 브랜치에서 작업 중이므로
+
+git checkout master
+
+ls // 어느 파일? 왜? git은 commit 사건의 파일 스트림 관리
+
+=> pdf 강의 자료의 git view 다시 보여 줌
+
+ 
+ 
+
+ 
+
+ 
+
+ 
+
+=======================
+
+----- merge-----
+
+git checkout master
+
+vim f1 // 한 줄 add
+
+cat f1
+
+git status
+
+git add f1
+
+git commit -m '....'
+
+cat f1
+
+git chackout br1
+
+vim f2 // 한 줄 add
+
+git status
+
+git add f2
+
+git commit -m '.......'
+
+git status
+
+ls; cat f1; cat f2
+
+//
+
+git checkout master
+
+ls // f1만 보임
+
+git checkout master
+
+git merge -m 'merge br1 to master' br1  
+
+ 
+   // 상위 branch에서만 하위 branch merge 할 수 있음
+
+   // 출력 화면 index 두 개, Fast-forward
+
+git status
+
+ls // merge 된 것 확인
+
+  // 즉 f1이 변경된 것과 br1에서 만들었던 파일도 master 브랜치에 보임
+
+ 
+
+ 
+
+ 
+
+ 
+
+// 아래 git command 들을 자습. 시험에는 자습했는지 확인 문제 나옴
+
+git config -h
+
+git config --global user.name '<이름>'
+
+git config --global user.email <email address>
+
+git config --global core.editor vim
+
+git config --list // git config -l
+
+git config user.name // git config <key>
+
+vim 1.txt  //1.txt created
+
+vim 2.txt  //2.txt created
+
+la -al
+
+git status
+
+// 출력문을 꼼꼼히 읽고 실험해 볼 것
+
+git add .
+
+rm 1.txt
+
+cat 1.txt
+
+git status
+
+ 
+git restore 1.txt
+
+git status // restore 된 것 확인, restore란 무엇? 중요한 내용. 시험 문제
+
+ 
+
+git rm --cached 1.txt  // unstage
+
+cat 1.txt // filesystem에는 있는 것 확인
+
+git status
+
+rm 1.txt
+
+cat 1.txt // rm 된 것 확인
+
+git restore 1.txt // 실패 확인 stage에 없음
+
+ 
+
+vim 3.txt //3.txt created
+
+git status
+
+git add .
+
+git commit -am'1st commit 2.txt & 3.txt'
+
+git status
+
+git log
+
+ 
+
+vim 2.txt   // modify to include 'line 2 added'
+
+git status // modified: 2.txt
+
+cat 2.txt // 변경된것 확인
+
+git restore 2.txt // 변경 되돌림, 조심 사용
+
+cat 2.txt
+
+ 
+
+vim 2.txt // line 2 added again
+
+cat 2.txt
+
+ 
+git commit -am'2nd commit 2.txt 3.txt'  
+
+ 
+
+git log // to find commit history
+
+git checkout <1st commit-id> // move to 1st commit, i.e., to previous version,
+
+   위험한 명령임, branch 사용하는 것이 정상
+
+git status // HEAD detached at <commit-id>
+
+cat 2.txt // 수정 작업 후 commit 가능
+
+git log // HEAD가 현재 가리키는 commit 지점은 master가 아닌
+
+   과거 commit point에서의 log
+
+git checkout master // git checkout <2nd commit-id>와 다름
+
+cat 2.txt
+
+ 
+
+// git commit --amend 연습
+
+vim 4.txt // 4.txt created
+
+touch 5.txt
+
+git add 5.txt
+
+git commit -m'3rd committed' //git add 4.txt를 실수로 빼먹은 상황
+
+git add 4.txt // 늦었지만 지금 add 하고나서
+
+git commit --amend --no-edit
+
+//또는 commit message를 바꾸고 싶으면
+
+       commit --amend -m'update the commit message'
+
+git status // 확인
+
+// 만일 4.txt를 git add 한 다음에 다른 새로운 commit을 원했다면
+
+       --amend 없이 새로이 commit하면 됨
